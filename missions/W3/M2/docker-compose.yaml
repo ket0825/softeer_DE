@@ -4,7 +4,7 @@ services:
     image: hadoop-base:latest
     user: hduser
     volumes:
-      - hadoop_namenode1:/hadoop/dfs/name
+      - hadoop_namenode1_sec:/hadoop/dfs/name
     ports:
       - "9870:9870" # HDFS Web UI
       - "8020:8020" # RPC
@@ -22,7 +22,7 @@ services:
     image: hadoop-base:latest
     user: hduser
     volumes:
-      - hadoop_datanode1:/hadoop/dfs/data
+      - hadoop_datanode1_sec:/hadoop/dfs/data
       # 다른 볼륨 설정...
     container_name: datanode1
     depends_on:
@@ -37,10 +37,11 @@ services:
     user: hduser
     image: hadoop-base:latest
     volumes:
-      - hadoop_datanode2:/hadoop/dfs/data
+      - hadoop_datanode2_sec:/hadoop/dfs/data
     # command: [""]  # datanode 컨테이너 실행 시 실행할 명령어.
     depends_on:
       - namenode
+    # command: ["/bin/bash"]  # namenode 컨테이너 실행 시 실행할 명령어.
     command: ["./datanode-entrypoint.sh"]  # datanode 컨테이너 실행 시 실행할 명령어.
     networks:
       - hadoop_network

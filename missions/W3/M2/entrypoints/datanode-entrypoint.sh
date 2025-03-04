@@ -15,6 +15,9 @@ echo "Java version: $(java -version)"
 # HDFS 시작
 $HADOOP_HOME/sbin/start-dfs.sh
 
+# 대기
+sleep 30
+
 # HDFS SafeMode 해제
 $HADOOP_HOME/bin/hdfs dfsadmin -safemode leave
 

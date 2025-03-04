@@ -13,17 +13,6 @@ sudo chmod -R 755 /hadoop
 if [ ! -f "/hadoop/dfs/name/current/VERSION" ]; then
     $HADOOP_HOME/bin/hdfs namenode -format
     echo "Successfully formatted namenode"
-
-    # HDFS에 기본 디렉토리 생성
-        $HADOOP_HOME/bin/hdfs dfs -mkdir /tmp
-        $HADOOP_HOME/bin/hdfs dfs -mkdir -p /users/hduser
-        $HADOOP_HOME/bin/hdfs dfs -mkdir /jars
-        
-        # 생성된 디렉토리들에 모든 권한 (rwx) 부여
-        $HADOOP_HOME/bin/hdfs dfs -chmod 777 /tmp
-        $HADOOP_HOME/bin/hdfs dfs -chmod 777 /users
-        $HADOOP_HOME/bin/hdfs dfs -chmod 777 /jars
-
 fi
 
 # worker 파일 복사
@@ -55,6 +44,21 @@ echo "Java version: $(java -version)"
 
 # HDFS SafeMode 해제
 $HADOOP_HOME/bin/hdfs dfsadmin -safemode leave
+
+# HDFS에 기본 디렉토리 생성 (namenode가 완전히 시작된 후)
+if [ ! -f "/hadoop/dfs/name/current/VERSION.bak" ]; then
+    $HADOOP_HOME/bin/hdfs dfs -mkdir -p /tmp
+    $HADOOP_HOME/bin/hdfs dfs -mkdir -p /users/hduser
+    $HADOOP_HOME/bin/hdfs dfs -mkdir /jars
+    
+    # 생성된 디렉토리들에 모든 권한 (rwx) 부여
+    $HADOOP_HOME/bin/hdfs dfs -chmod 777 /tmp
+    $HADOOP_HOME/bin/hdfs dfs -chmod 777 /users
+    $HADOOP_HOME/bin/hdfs dfs -chmod 777 /jars
+    
+    # 처리 완료 표시
+    cp /hadoop/dfs/name/current/VERSION /hadoop/dfs/name/current/VERSION.bak
+fi
 
 # namenode 로그를 계속 모니터링하면서 컨테이너 실행 유지
 tail -f $HADOOP_HOME/logs/hadoop-*-namenode-*.log
