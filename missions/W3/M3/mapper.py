@@ -6,7 +6,17 @@ import sys
 # 표준 입력에서 한 줄씩 읽기
 for line in sys.stdin:
     # 공백 제거 및 소문자 변환
-    line = line.strip().lower()
+    line = line.strip().lower() \
+            .replace(",", "") \
+            .replace(".", "") \
+            .replace("?", "") \
+            .replace("!", "") \
+            .replace('"', "") \
+            .replace("'", "") \
+            .replace("“", "") \
+            .replace("”", "") \
+            .replace("‘", "") \
+            .replace("’", "")
     
     # 공백을 기준으로 단어 분리
     words = line.split()
