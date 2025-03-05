@@ -5,3 +5,6 @@ materials/data_engineering_course_materials/
 *.pyc
 .vscode/
 .env
+*.csv
+*.log
+*.json
