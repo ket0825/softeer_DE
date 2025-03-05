@@ -40,22 +40,31 @@ ENV YARN_NODEMANAGER_USER=hduser
 RUN sudo apt-get install -y software-properties-common \
     && sudo add-apt-repository -y ppa:deadsnakes/ppa \
     && sudo apt-get update -y \
-    && sudo apt-get install -y python3.10 python3-pip    
+    && sudo apt-get install -y python3.10 python3.10-dev python3.10-distutils python3.10-venv python3-setuptools
 
+# Python 3.10용 pip 설치
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    && python3.10 get-pip.py \
+    && rm get-pip.py
+
+# Python 심볼릭 링크 설정 및 pip 심볼릭 링크 추가
 RUN cd /usr/bin/ \
     && sudo rm -rf python \
     && sudo ln -s python3.10 python \
+    && sudo ln -s pip3.10 pip \
     && sudo apt-get clean \
     && sudo rm -rf /var/lib/apt/lists/* \
     && sudo rm -rf /tmp/*
-RUN pip install datasets
 
-COPY missions/W3/M5/ssh_config /etc/ssh/ssh_config
+# datasets 패키지 설치 (이전 위치에서)
+RUN python -m pip install --no-cache-dir datasets
+
+COPY missions/W3/M6/ssh_config /etc/ssh/ssh_config
 ENV JAVA_HOME=/opt/java/openjdk/
 RUN echo "export JAVA_HOME=/opt/java/openjdk/" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
 
-COPY missions/W3/M5/entrypoints/ /home/hduser/
-COPY missions/W3/M5/hadoop-configs/* $HADOOP_HOME/etc/hadoop/
+COPY missions/W3/M6/entrypoints/ /home/hduser/
+COPY missions/W3/M6/hadoop-configs/* $HADOOP_HOME/etc/hadoop/
 
 ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$JAVA_HOME/bin
 ENV LD_LIBRARY_PATH=$HADOOP_HOME/lib/native
@@ -76,8 +85,8 @@ USER hduser
 WORKDIR /usr/local/bin
 WORKDIR /home/hduser
 
-COPY missions/W3/M5/*.py /home/hduser/
-COPY missions/W3/M5/ml-20m/*.csv /home/hduser/
+COPY missions/W3/M6/*.py /home/hduser/
+COPY missions/W3/M6/*.txt /home/hduser/
 
 # YARNSTART=0 will prevent yarn scheduler from being launched
 ENV YARNSTART=1
