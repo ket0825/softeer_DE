@@ -4,7 +4,7 @@ services:
     image: hadoop-base:latest
     user: hduser
     volumes:
-      - hadoop_namenode1_sec:/hadoop/dfs/name
+      - hadoop_namenode1:/hadoop/dfs/name
     ports:
       - "9870:9870" # HDFS Web UI
       - "8020:8020" # RPC

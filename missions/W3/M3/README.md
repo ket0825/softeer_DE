@@ -28,7 +28,7 @@ docker compose -f missions/W3/M3/docker-compose.yaml up
 
 ```bash
 docker exec -it namenode /bin/bash
-hdfs dfs -put /users/hduser/sample_ebook.txt /users/hduser
+hdfs dfs -put /home/hduser/sample_ebook.txt /users/hduser
 ```
 
 ## mapper.py
