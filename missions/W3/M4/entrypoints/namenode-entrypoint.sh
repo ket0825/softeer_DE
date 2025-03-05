@@ -47,7 +47,7 @@ $HADOOP_HOME/bin/hdfs dfsadmin -safemode leave
 
 # HDFS에 기본 디렉토리 생성 (namenode가 완전히 시작된 후)
 if [ ! -f "/hadoop/dfs/name/current/VERSION.bak" ]; then
-    $HADOOP_HOME/bin/hdfs dfs -mkdir -p /tmp
+    $HADOOP_HOME/bin/hdfs dfs -mkdir /tmp
     $HADOOP_HOME/bin/hdfs dfs -mkdir -p /users/hduser
     $HADOOP_HOME/bin/hdfs dfs -mkdir /jars
     

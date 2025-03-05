@@ -22,8 +22,10 @@ services:
     image: hadoop-base:latest
     user: hduser
     volumes:
-      - hadoop_datanode1_sec:/hadoop/dfs/data
+      - hadoop_datanode1:/hadoop/dfs/data
       # 다른 볼륨 설정...
+    ports:      
+      - "18042:8042" # Yarn WEB UI
     container_name: datanode1
     depends_on:
       - namenode
@@ -37,7 +39,9 @@ services:
     user: hduser
     image: hadoop-base:latest
     volumes:
-      - hadoop_datanode2_sec:/hadoop/dfs/data
+      - hadoop_datanode2:/hadoop/dfs/data
+    ports:      
+      - "28042:8042" # Yarn WEB UI
     # command: [""]  # datanode 컨테이너 실행 시 실행할 명령어.
     depends_on:
       - namenode
@@ -54,4 +58,3 @@ volumes:
 networks:
   hadoop_network:
     driver: bridge
-  
